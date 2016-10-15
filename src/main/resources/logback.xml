@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="FILE-AUDIT"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/tmp/jpa-app/debug.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} - %msg%n
+            </Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>/tmp/jpa-app/archived/debug.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+    </appender>
+
+    <logger name="org.hibernate.SQL" level="DEBUG">
+        <appender-ref ref="FILE-AUDIT"/>
+    </logger>
+
+    <logger name="net.therap" level="DEBUG">
+        <appender-ref ref="FILE-AUDIT"/>
+    </logger>
+
+</configuration>
