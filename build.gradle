@@ -1,0 +1,44 @@
+apply plugin: 'java'
+
+apply plugin: 'eclipse'
+
+version = '1.0'
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'net.therap.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+//Get dependencies from Maven central repository
+repositories {
+   mavenCentral()
+    maven {
+        url 'http://artifactory.therapbd.net/artifactory/libs-release'
+    }
+
+    maven {
+        url 'http://artifactory.therapbd.net/artifactory/libs-snapshot'
+    }
+}
+
+//Project dependencies
+dependencies {
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '3.6.10.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.3.2.Final'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '3.6.10.Final'
+    compile group: 'com.oracle', name: 'ojdbc7', version: '12.1.0.2.0'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.2'
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.0.9'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.9'
+    compile group: 'joda-time', name: 'joda-time', version: '2.4'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+}
