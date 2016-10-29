@@ -1,36 +1,36 @@
-package net.therap.domain.oneToManyUni;
+package net.therap.domain.oneToOneUni;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author ashrafhasan
- * @since 10/20/16
+ * @since 10/10/16
  */
 @Entity
-@Table(name = "table_employee")
+@Table(name = "table_employee", uniqueConstraints = {@UniqueConstraint(columnNames = "p_id")})
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(generator = "employee_generator", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "employee_generator", sequenceName = "employee_sequence")
+    @SequenceGenerator(name = "employee_generator", sequenceName = "employee_sequence", allocationSize = 1)
     private long id;
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "employee_id", nullable = false)
-    private List<Phone> phoneList;
-
     public Employee() {
     }
 
-    public Employee(String name) {
+    public Employee(String name, ParkingSpace parkingSpace) {
         this.name = name;
+        this.parkingSpace = parkingSpace;
     }
+
+    @OneToOne
+    @JoinColumn(name = "p_id")
+    private ParkingSpace parkingSpace;
 
     public long getId() {
         return id;
@@ -48,12 +48,12 @@ public class Employee implements Serializable {
         this.name = name;
     }
 
-    public List<Phone> getPhoneList() {
-        return phoneList;
+    public ParkingSpace getParkingSpace() {
+        return parkingSpace;
     }
 
-    public void setPhoneList(List<Phone> phoneList) {
-        this.phoneList = phoneList;
+    public void setParkingSpace(ParkingSpace parkingSpace) {
+        this.parkingSpace = parkingSpace;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class Employee implements Serializable {
         return "Employee{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", phoneList=" + phoneList +
+                ", parkingSpace=" + parkingSpace +
                 '}';
     }
 }

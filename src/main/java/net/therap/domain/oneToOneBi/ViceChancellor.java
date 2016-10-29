@@ -1,4 +1,4 @@
-package net.therap.domain.manyToOneUni;
+package net.therap.domain.oneToOneBi;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,29 +8,29 @@ import java.io.Serializable;
  * @since 10/10/16
  */
 @Entity
-@Table(name = "table_student")
-public class Student implements Serializable {
+@Table(name = "table_vice_chancellor", uniqueConstraints = @UniqueConstraint(columnNames = {"u_id"}))
+public class ViceChancellor implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "student_generator", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "student_generator", sequenceName = "student_sequence")
+    @GeneratedValue(generator = "vice_chancellor_generator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "vice_chancellor_generator", sequenceName = "vice_chancellor_sequence", allocationSize = 1)
     private long id;
 
     private String name;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "uni_id", nullable = false)
-    private University university;
-
-    public Student() {
+    public ViceChancellor() {
     }
 
-    public Student(String name, University university) {
+    public ViceChancellor(String name, University university) {
         this.name = name;
         this.university = university;
     }
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "u_id", nullable = false)
+    private University university;
 
     public long getId() {
         return id;
@@ -58,10 +58,9 @@ public class Student implements Serializable {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "ViceChancellor{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", university=" + university +
                 '}';
     }
 }

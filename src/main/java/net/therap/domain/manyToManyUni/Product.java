@@ -1,4 +1,4 @@
-package net.therap.domain.manyToOneUni;
+package net.therap.domain.manyToManyUni;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,22 +8,22 @@ import java.io.Serializable;
  * @since 10/10/16
  */
 @Entity
-@Table(name = "table_university")
-public class University implements Serializable {
+@Table(name = "table_product")
+public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "university_generator", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "university_generator", sequenceName = "university_sequence")
+    @GeneratedValue(generator = "product_generator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "product_generator", sequenceName = "product_sequence", allocationSize = 1)
     private long id;
 
     private String name;
 
-    public University() {
+    public Product() {
     }
 
-    public University(String name) {
+    public Product(String name) {
         this.name = name;
     }
 
@@ -45,7 +45,7 @@ public class University implements Serializable {
 
     @Override
     public String toString() {
-        return "University{" +
+        return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
